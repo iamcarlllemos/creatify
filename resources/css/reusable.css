@@ -1,0 +1,24 @@
+.line-clamp {
+    width: 100%;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+}
+
+.line-clamp-2 {
+    width: 100%;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+}
+p.error {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--danger);
+    margin: 8px 0 0 2px;
+}
