@@ -36,17 +36,7 @@ class About extends Component
     public $province = '';
 
     public function mount() {
-        $id = 1;
-        $record = PersonalInformation::where('user_id', $id)->first();
-        $this->firstname = $record->firstname;
-        $this->middlename = $record->middlename;
-        $this->lastname = $record->lastname;
-        $this->address = $record->address;
-        $this->phone_no = $record->phone_no;
-        $this->gender = $record->gender;
-        $this->birthday = $record->birthday;
-        $this->city = $record->city;
-        $this->province = $record->province;
+       
     }
 
     public function create() {
@@ -66,6 +56,18 @@ class About extends Component
 
     public function render()
     {
+        $id = 1;
+        $record = PersonalInformation::where('user_id', $id)->first();
+        $this->firstname = $record->firstname ?? '';
+        $this->middlename = $record->middlename ?? '';
+        $this->lastname = $record->lastname ?? '';
+        $this->address = $record->address ?? '';
+        $this->phone_no = $record->phone_no ?? '';
+        $this->gender = $record->gender ?? '';
+        $this->birthday = $record->birthday ?? '';
+        $this->city = $record->city ?? '';
+        $this->province = $record->province ?? '';
+        
         return view('livewire.about');
     }
 }

@@ -8,6 +8,7 @@
             <i class='bx bx-plus'></i> Add New
         </button>
     </div>
+
     <form wire:submit="create">
         @forelse($rows as $index => $row)
             <div class="card shadow mb-4 p-3" wire:poll>
@@ -22,7 +23,7 @@
                         <input type="text" wire:model="rows.{{$index}}.id">
                         <div class="col-12 col-md-12 mb-3">
                             <div class="form-group">
-                                <select name="name" wire:model="rows.{{ $index }}.name" class="form-control skills-multiple-select">
+                                <select name="name" wire:model="rows.{{ $index }}.name" class="form-select">
                                     <option value=""> - CHOOSE SKILLS - </option>
                                     @forelse($skills_list as $item)
                                         <option value="{{ $item->name }}">{{ $item->name }}</option>
@@ -30,7 +31,6 @@
                                         <option value="">No skills available</option>
                                     @endforelse
                                 </select>
-
                                 <p class="error">@error('rows.'.$index.'.name') {{$message}} @enderror</p>
                             </div>
                         </div>

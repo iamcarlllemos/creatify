@@ -6,25 +6,30 @@
             <div class="col-12 col-md-7">
                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a href="{{route('portfolio.about')}}" wire:navigate class="nav-link {{$tab === 'about' ? 'active' : ''}}" id="pills-about-tab" data-bs-toggle="pill" type="button" role="tab" aria-controls="pills-about" aria-selected="true">About</a>
+                        <a href="/portfolio/about" wire:navigate class="nav-link {{$type === 'about' ? 'active' : ''}}" id="pills-about-tab" data-bs-toggle="pill" type="button" role="tab" aria-controls="pills-about" aria-selected="true">About</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a href="{{route('portfolio.skills')}}" wire:navigate class="nav-link {{$tab === 'skills' ? 'active' : ''}}" id="pills-skills-tab" data-bs-toggle="pill" type="button" role="tab" aria-controls="pills-skills" aria-selected="false">Skills</a>
+                        <a href="/portfolio/skills" wire:navigate class="nav-link {{$type === 'skills' ? 'active' : ''}}" id="pills-skills-tab" data-bs-toggle="pill" type="button" role="tab" aria-controls="pills-skills" aria-selected="false">Skills</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link {{$tab === '' ? 'active' : ''}}" id="pills-projects-tab" data-bs-toggle="pill" type="button" role="tab" aria-controls="pills-projects" aria-selected="false">Projects</button>
+                        <a href="/portfolio/projects" wire:navigate class="nav-link {{$type === 'projects' ? 'active' : ''}}" id="pills-projects-tab" data-bs-toggle="pill" type="button" role="tab" aria-controls="pills-projects" aria-selected="false">Projects</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link {{$tab === '' ? 'active' : ''}}" id="pills-projects-tab" data-bs-toggle="pill" type="button" role="tab" aria-controls="pills-offers" aria-selected="false">Offers</button>
+                        <a href="/portfolio/offers" wire:navigate class="nav-link {{$type === 'offers' ? 'active' : ''}}" id="pills-projects-tab" data-bs-toggle="pill" type="button" role="tab" aria-controls="pills-offers" aria-selected="false">Offers</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link {{$tab === '' ? 'active' : ''}}" id="pills-projects-tab" data-bs-toggle="pill" type="button" role="tab" aria-controls="pills-template" aria-selected="false">Template</button>
+                        <a href="/portfolio/template" wire:navigate class="nav-link {{$type === 'template' ? 'active' : ''}}" id="pills-projects-tab" data-bs-toggle="pill" type="button" role="tab" aria-controls="pills-template" aria-selected="false">Template</a>
                     </li>
                 </ul>
-                @if ($tab === 'about')
+                @if ($type === 'about')
                     @livewire('about')
-                @elseif ($tab === 'skills')
+                @elseif ($type === 'skills')
                     @livewire('skills')
+                @elseif ($type === 'projects')
+                    @livewire('projects')
+                @elseif ($type === 'offers')
+                    
+                @elseif ($type === 'template')
                 @endif
             </div>
             <div class="col-12 col-md-5">

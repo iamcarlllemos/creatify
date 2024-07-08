@@ -2,25 +2,42 @@
 
 namespace App\Livewire;
 
+use App\Models\ProjectTechnologies;
 use App\Models\SkillsInformation;
-use App\Models\SkillsList;
+use Livewire\WithFileUploads;
 use Livewire\Component;
 
-class Skills extends Component
+class Projects extends Component
 {
 
-    public $skills_list;
+    use WithFileUploads;
+
+    public $technologies;
     public $all_skills;
-    public $rows = [];
+    public $items = [];
+    public $images = [];
+
+    protected $listeners = ['rowAdded'];
 
     public function mount() {
-        $this->skills_list = SkillsList::all();
+        $projects = ProjectTechnologies::all()->toArray();
+        $groupedProjects = array_reduce($projects, function($result, $project) {
+            $category = $project['category'];
+            if (!isset($result[$category])) {
+                $result[$category] = [];
+            }
+            $result[$category][] = $project;
+            return $result;
+        }, []);
+
+        $this->technologies = $groupedProjects;
+        $this->add_row();
     }
 
     public function add_row($data = null) {
         if(is_object($data) && $data->count() > 0) {
             foreach($data as $index => $skills) {
-                $this->rows[$index] = [
+                $this->items[$index] = [
                     'id' => $skills->id,
                     'name' => $skills->name, 
                     'experience' => $skills->experience,
@@ -29,7 +46,7 @@ class Skills extends Component
                 ];
             }
         } else {
-            $this->rows[] = [
+            $this->items[] = [
                 'id' => '',
                 'name' => '', 
                 'experience' => '', 
@@ -37,6 +54,9 @@ class Skills extends Component
                 'description' => ''
             ];
         }
+
+        $this->dispatch('test'); 
+
     }
 
     public function remove_row($index, $id = null) {
@@ -49,15 +69,15 @@ class Skills extends Component
             }
         }
 
-        unset($this->rows[$index]);
-        $this->rows = array_values($this->rows);
+        unset($this->items[$index]);
+        $this->items = array_values($this->items);
     }
 
     public function create() {
         $validated = $this->validate();
         $id = 1;
        
-        foreach ($validated['rows'] as &$row) {
+        foreach ($validated['items'] as &$row) {
             SkillsInformation::updateOrCreate(['id' => $row['id']], [
                 'user_id' => $id,
                 'name' => $row['name'],
@@ -70,19 +90,19 @@ class Skills extends Component
 
     public function rules() {
         return [
-            'rows.*.id' => '',
-            'rows.*.name' => 'required',
-            'rows.*.experience' => 'required',
-            'rows.*.expertise' => 'required',
-            'rows.*.description' => '',
+            'items.*.id' => '',
+            'items.*.name' => 'required',
+            'items.*.experience' => 'required',
+            'items.*.expertise' => 'required',
+            'items.*.description' => '',
         ];
     }
 
     public function messages() {
         return [
-            'rows.*.name.required' => 'The name field is required.',
-            'rows.*.experience.required' => 'The experience field is required.',
-            'rows.*.expertise.required' => 'The expertise field is required.',
+            'items.*.name.required' => 'The name field is required.',
+            'items.*.experience.required' => 'The experience field is required.',
+            'items.*.expertise.required' => 'The expertise field is required.',
         ];
     }
 
@@ -93,6 +113,6 @@ class Skills extends Component
         if($all_skills->count() > 0) {
             $this->add_row($all_skills);
         }
-        return view('livewire.skills');
+        return view('livewire.projects');
     }
 }

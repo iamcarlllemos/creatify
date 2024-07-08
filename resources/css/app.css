@@ -4,7 +4,8 @@
 
 :root {
     --light: #fff;
-    --dark-gray: #3f3f3f;
+    --darker-gray: #3f3f3f;
+    --dark-gray: #6d6d6d;
     --light-gray: #e6e6e6;
     --lighter-gray: #f4f4f4;
     --dark: #000;

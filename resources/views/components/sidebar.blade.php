@@ -23,7 +23,7 @@
                         </a>
                     </li>
                     <li class="list-unstyled-item">
-                        <a href="{{route('portfolio.about')}}" wire:navigate class="d-flex align-items-center gap-3 nav-link text-uppercase py-2 ms-3">
+                        <a href="/portfolio/about" wire:navigate class="d-flex align-items-center gap-3 nav-link text-uppercase py-2 ms-3">
                             <div class="icon">
                                 <i class='bx bxs-widget bx-flip-vertical' ></i>
                             </div>

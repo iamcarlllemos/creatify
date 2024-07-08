@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProjectCategory extends Model
+class ProjectTechnologies extends Model
 {
     use HasFactory;
-    protected $table = 'project_categories';
+    protected $table = 'project_technologies';
     protected $fillable = [
+        'category',
         'name',
-        'description'
     ];
 }

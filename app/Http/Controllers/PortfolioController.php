@@ -6,13 +6,19 @@ use Illuminate\Http\Request;
 
 class PortfolioController extends Controller
 {
-    public function about() {
-        $tab = 'about';
-        return view('portfolio', compact('tab'));
+
+    public function index(string $type) {
+        $allowed = [
+            'about',
+            'skills',
+            'projects',
+            'offers',
+            'template'
+        ];
+
+        if(in_array($type, $allowed)) {
+            return view('portfolio', compact('type'));
+        }
     }
 
-    public function skills() {
-        $tab = 'skills';
-        return view('portfolio', compact('tab'));
-    }
 }
