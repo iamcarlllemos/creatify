@@ -1,5 +1,17 @@
-import 'bootstrap/dist/js/bootstrap.bundle'
-import { drag_drop_upload } from './drag_drop_upload';
+import 'bootstrap';
+import Swal from 'sweetalert2';
+
+
+
+window.Swal = Swal;
+window.lightGallery = lightGallery;
+
+lightGallery(document.getElementById('lightgallery'), {
+    plugins: [lgZoom, lgThumbnail],
+    licenseKey: 'your_license_key',
+    speed: 500,
+    thumbnail: true,    
+});
 
 $('.hamburger-wrapper').on('click', function() {
     if(!$('.hamburger').hasClass('active')) {
@@ -48,13 +60,28 @@ $('.form-control').on('focus', function() {
     }
 });
 
-$('.multiple-select-technologies').select2({
-    width: '100%',
-    theme: 'classic',
-    placeholder: ' - CHOOSE TECHNOLOGIES - ',
-    allowClear: false
-});
 
+// $('.multiple-select-technologies').selectize({
+//     delimiter: ",",
+//         persist: false,
+//         create: function (input) {
+//             return {
+//                 value: input,
+//                 text: input,
+//             };
+//         },
+//         onChange(value) {
+//             return {
+//                 value: value,
+//                 text: value,
+//             };
+//         }
+// });
+
+$('.modal').on('hidden.bs.modal', function(e) {
+    $(this).find('input, textarea, select').val('').prop('selectedIndex', 0);
+    $(this).find('.error').remove();
+});
 
 // let uploadButton = document.getElementById("attachments");
 // let chosenImage = document.getElementById("chosen-image");

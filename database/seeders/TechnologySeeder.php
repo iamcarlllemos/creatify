@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\ProjectTechnologies;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Technologies;
 use Illuminate\Database\Seeder;
 
-class ProjectTechnologiesSeeder extends Seeder
+class TechnologySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -122,70 +121,70 @@ class ProjectTechnologiesSeeder extends Seeder
         
         
         foreach($web_development as $items) {
-            ProjectTechnologies::create([
+            Technologies::create([
                 'category' => 'web development',
                 'name' => $items
             ]);
         }
 
         foreach($data_analysis as $items) {
-            ProjectTechnologies::create([
+            Technologies::create([
                 'category' => 'data analysis',
                 'name' => $items
             ]);
         }
 
         foreach($graphic_design as $items) {
-            ProjectTechnologies::create([
+            Technologies::create([
                 'category' => 'graphic design',
                 'name' => $items
             ]);
         }
 
         foreach($machine_learning as $items) {
-            ProjectTechnologies::create([
+            Technologies::create([
                 'category' => 'machine learning',
                 'name' => $items
             ]);
         }
 
         foreach($video_editing as $items) {
-            ProjectTechnologies::create([
+            Technologies::create([
                 'category' => 'video editing',
                 'name' => $items
             ]);
         }
 
         foreach($content_creation as $items) {
-            ProjectTechnologies::create([
+            Technologies::create([
                 'category' => 'content creation',
                 'name' => $items
             ]);
         }
 
         foreach($website_builder as $items) {
-            ProjectTechnologies::create([
+            Technologies::create([
                 'category' => 'website builder',
                 'name' => $items
             ]);
         }
 
         foreach($game_development as $items) {
-            ProjectTechnologies::create([
+            Technologies::create([
                 'category' => 'game development',
                 'name' => $items
             ]);
         }
         
         foreach($videography as $items) {
-            ProjectTechnologies::create([
+            Technologies::create([
                 'category' => 'videography',
                 'name' => $items
             ]);
         }
 
         foreach($cybersecurity as $items) {
-            ProjectTechnologies::create([
+            Technologies::create([
                 'category' => 'cybersecurity',
                 'name' => $items
             ]);

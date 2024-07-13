@@ -3,78 +3,156 @@
         <h4>Share your latest work!</h4>
         <p>Get recognize through your projects and works.</p>
     </div>
-    <div class="actions d-flex justify-content-end mb-5">
-        <button class="btn-add-item" wire:click="add_row">
+    <div class="actions d-flex justify-content-end">
+        <a wire:navigate href="/portfolio/projects?action=create" class="btn-add-item">
             <i class='bx bx-plus'></i> Add New
-        </button>
+        </a>
     </div>
-
-    <form wire:submit="create">
+    <hr>
+    @if ($selected)
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-danger" wire:click="attemptDelete()">Remove Selected</button>
+        </div>
+    @endif
+    <div class="item-content mt-4">
         @forelse($items as $index => $item)
-            <div class="card shadow mb-4 p-3">
-                <div class="card-header d-flex align-items-center justify-content-end border-0 bg-transparent pt-4">
-                        <button class="btn-remove-item" wire:click.prevent="remove_row({{$index}}, {{$item['id']}})">
-                            <i class='bx bx-trash' ></i>
-                            Remove
-                        </button>
+            <div class="card shadow mb-4 item" data-id="{{$index}}">
+                <div class="card-body p-4">
+                    <div class="actions">
+                        <div class="select">
+                            <input type="checkbox" wire:change="updateSelected({{$item->id}})">
+                        </div>
+                        <div class="edit" wire:click.prevent="">
+                            <i class='bx bx-edit-alt' ></i>
+                        </div>
+                        <div class="delete" wire:click.prevent="attemptDelete({{$item->id}})">
+                            <i class='bx bx-trash'></i>
+                        </div>
                     </div>
-                <div class="card-body p-3">
-                    <pre>
-                        {{print_r($items)}}
-                    </pre>
-                    <div class="row">
-                        <input type="text" wire:model="items.{{$index}}.id">
-                        <div class="col-12 col-md-12 mb-3">
-                            <div class="form-group" wire:ignore>
-                                <select name="name" wire:model="items.{{ $index }}.name" class="form-select multiple-select-technologies" multiple="multiple">
-                                    @forelse($technologies as $group => $technology)
-                                        <optgroup label="{{$group}}" class="text-uppercase">
-                                            @foreach($technology as $item)
-                                                <option value="{{ $item['name'] }}">{{ $item['name'] }}</option>
-                                            @endforeach
-                                        </optgroup>
-                                    @empty
-                                        <option value="">No skills available</option>
-                                    @endforelse
-                                </select>
-                                <p class="error">@error('items.'.$index.'.name') {{$message}} @enderror</p>
-                            </div>
+                    <div class="mt-3">
+                        <div class="caption">
+                            <h5>{{$item->caption}}</h5>
+                            <p>{{wordDate($item->created_at)}}</p>
                         </div>
-                        <div class="col-12 col-md-12 mb-3">
-                            <div class="form-group">
-                                <input type="text" name="caption" wire:model="items.{{$index}}.caption" class="form-control">
-                                <label for="caption">Caption</label>
-                                <p class="error">@error('items.'.$index.'.caption') {{$message}} @enderror</p>
-                            </div>
+                        <div class="caption-description">
+                            <p>{{$item->description}}</p>
                         </div>
-                        <div class="col-12 col-md-12 mb-3">
-                            <div class="form-group">
-                                <textarea name="description" wire:model="items.{{$index}}.description" class="form-control description"></textarea>
-                                <label for="description">Tell us what you do</label>
-                                <p class="error">@error('items.'.$index.'.description') {{$message}} @enderror</p>
+                    </div>
+                    <div class="technologies grid">
+                        @foreach ($item->technologies as $technologies)
+                            <div class="oval">
+                                {{$technologies['name']}}
                             </div>
-                        </div>
-                        <div class="col-12 mb-3">
-                            <div class="form-group">
-                                <div class="dropzone" id="dropzone">
-                                    <div>
-                                        <label for="attachments" class="btn-add-media">
-                                            <i class='bx bx-image-add'></i>Add Images
-                                        </label>
-                                        <input id="attachments" wire:model.live="items.{{$index}}.images" type="file" class="d-none" accept=".png, .jpg, .gif, .pdf, .mp4" multiple>
-                                        <hr class="my-3">
-                                        <h6>Drag or Drop</h6>
-                                        <p>(Note: Allowed file types .png, .jpg, .gif, .pdf, .mp4)</p>
+                        @endforeach
+                    </div>
+                    
+                    @if ($item->attachments && $item->attachments->count() > 0)
+                        <hr>
+                    @endif
+                    <div class="attachments">
+                        @if ($item->attachments && $item->attachments->count() > 4)
+                            <div id="lightgallery" class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <a data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}">
+                                                <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" class="w-100" alt="" srcset="">
+                                            </a>
+                                        </div>
+                                        <div class="col-12">
+                                            <a data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}">
+                                                <img src="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}" class="w-100" alt="" srcset="">
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                                <div id="error"></div>
+                                <div class="col-12 col-md-6">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <a data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}">
+                                                <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}" class="w-100" alt="" srcset="">
+                                            </a>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="more-container">
+                                                <div class="more">
+                                                    <h4>+ {{$item->attachments->count() - 4}}</h4>
+                                                </div>
+                                                <a data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[3]->attachment)}}">
+                                                    <img src="{{Storage::url('project_attachments/'.$items[$index]->attachments[3]->attachment)}}" class="w-100" alt="" srcset="">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-12 col-md-12 mb-3">
-                            <div class="preview-display" wire:poll>
-                                
+                        @elseif ($item->attachments && $item->attachments->count() === 4)
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div id="lightgallery">
+                                            <a href="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}">
+                                                <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" class="w-100" alt="" srcset="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div id="lightgallery">
+                                            <a href="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}">
+                                                <img src="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}" class="w-100" alt="" srcset="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div id="lightgallery">
+                                            <a href="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}">
+                                                <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}" class="w-100" alt="" srcset="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div id="lightgallery">
+                                            <a href="{{Storage::url('project_attachments/'.$items[$index]->attachments[3]->attachment)}}">
+                                                <img src="{{Storage::url('project_attachments/'.$items[$index]->attachments[3]->attachment)}}" class="w-100" alt="" srcset="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @elseif ($item->attachments && $item->attachments->count() === 3)
+                            <div class="col-12 col-md-7 main">
+                                <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" class="w-100" alt="" srcset="">
+                            </div>
+                            <div class="col-12 col-md-5">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}" class="w-100" alt="" srcset="">
+                                    </div>
+                                    <div class="col-12">
+                                        <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}" class="w-100" alt="" srcset="">
+                                    </div>
+                                </div>
+                            </div>
+                        @elseif ($item->attachments && $item->attachments->count() == 2)
+                            <div class="col-12 col-md-6">
+                                <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" class="w-100" alt="" srcset="">
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}" class="w-100" alt="" srcset="">
+                            </div>
+                        @elseif ($item->attachments && $item->attachments->count() == 1)
+                            <div class="col-12 col-md-12 main">
+                                <div id="lightgallery">
+                                    <a href="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}">
+                                        <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" class="w-100" alt="" srcset="">
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -83,21 +161,39 @@
             <p>No Projects Found.</p>
         </div>
         @endforelse
-        <button class="btn btn-primary float-end">Save</button>
-    </form>
+    </div>
 </div>
 
-@script
+@section('scripts')
 <script>
-    Livewire.on('test', () => {
-        setTimeout(() => {
-            $('.multiple-select-technologies').select2({
-                width: '100%',
-                theme: 'classic',
-                placeholder: ' - CHOOSE TECHNOLOGIES - ',
-                allowClear: false
-            });
-        }, 100);
+
+    $(function() {
+        
+    });
+
+    Livewire.on('confirmDelete', (event) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.dispatch('delete')
+            }
+        })
+    });
+
+    Livewire.on('swal', (data) => {
+        Swal.fire({
+            icon: data[0].type,
+            title: data[0].title,
+            text: data[0].text,
+        });
+        $('input[type="checkbox"]').prop('checked', false);
     });
 </script>
-@endscript
+@endsection

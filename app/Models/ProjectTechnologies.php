@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class ProjectTechnologies extends Model
 {
     use HasFactory;
+
     protected $table = 'project_technologies';
     protected $fillable = [
-        'category',
-        'name',
+        'project_id',
+        'name'
     ];
+
 }

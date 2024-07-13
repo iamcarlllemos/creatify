@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProjectsAttachment extends Model
+class UserEducation extends Model
 {
     use HasFactory;
 
-    protected $table = 'projects_attachments';
+    protected $table = 'user_educations';
     protected $fillable = [
-        'project_id',
-        'caption',
-        'attachment'
+        'school',
+        'from_date',
+        'to_date'
     ];
 }

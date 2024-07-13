@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-fluid mt-4 px-4">
         <div class="row">
-            <div class="col-12 col-md-7">
+            <div class="{{in_array(request()->query('action'), ['create']) ? 'col-12 col-md-12' : 'col-12 col-md-7' }}">
                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a href="/portfolio/about" wire:navigate class="nav-link {{$type === 'about' ? 'active' : ''}}" id="pills-about-tab" data-bs-toggle="pill" type="button" role="tab" aria-controls="pills-about" aria-selected="true">About</a>
@@ -26,13 +26,17 @@
                 @elseif ($type === 'skills')
                     @livewire('skills')
                 @elseif ($type === 'projects')
-                    @livewire('projects')
+                    @if (request()->query('action') === 'create')
+                        @livewire('add-projects')
+                    @else
+                        @livewire('projects')
+                    @endif
                 @elseif ($type === 'offers')
                     
                 @elseif ($type === 'template')
                 @endif
             </div>
-            <div class="col-12 col-md-5">
+            <div class="{{in_array(request()->query('action'), ['create']) ? 'd-none' : 'col-md-5' }}">
                 preview here
             </div>
         </div>

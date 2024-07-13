@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\SkillsList;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Skills;
 use Illuminate\Database\Seeder;
 
-class skills_seeder extends Seeder
+class SkillsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -158,7 +157,7 @@ class skills_seeder extends Seeder
         ];
           
         foreach($items as $item) {
-            SkillsList::insert([
+            Skills::insert([
                 'name' => $item
             ]);
         }

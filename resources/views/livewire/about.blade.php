@@ -4,7 +4,7 @@
         <p>Fill out the information below for us to recognized you.</p>
     </div>
     <form wire:submit="create">
-        <div class="row" wire:poll>
+        <div class="row">
             <div class="col-12 col-md-12 mb-3">
                 <div class="form-group">
                     <div class="profile-image">

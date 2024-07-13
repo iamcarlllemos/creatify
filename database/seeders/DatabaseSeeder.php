@@ -28,7 +28,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
-            skills_seeder::class
+            SkillsSeeder::class,
+            TechnologySeeder::class
         ]);
 
     }

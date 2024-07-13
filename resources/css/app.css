@@ -10,7 +10,14 @@
     --lighter-gray: #f4f4f4;
     --dark: #000;
     --dark-blue: #032d3b;
-    --danger: #870000;
+    --danger: #fd0a0a;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 
 .btn-custom {

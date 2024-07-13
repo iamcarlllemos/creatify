@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Models\SkillsInformation;
-use App\Models\SkillsList;
+use App\Models\UserSkills;
+use App\Models\Skills as SkillsList;
 use Livewire\Component;
 
 class Skills extends Component
@@ -11,16 +11,76 @@ class Skills extends Component
 
     public $skills_list;
     public $all_skills;
-    public $rows = [];
+    public $items = [];
+
+    public $name = '';
+
+    public $experience = '';
+
+    public $expertise = '';
+
+    public $description = '';
 
     public function mount() {
         $this->skills_list = SkillsList::all();
     }
 
-    public function add_row($data = null) {
-        if(is_object($data) && $data->count() > 0) {
+    protected function rules():array {
+        return [
+            'name' => 'required|unique:user_skills,name',
+            'experience' => 'required',
+            'expertise' => 'required'
+        ];
+    }
+
+    public function messages() {
+        return [
+            'name.unique' => 'This skill is already added'
+        ];
+    }
+    
+    public function create() {
+
+        $this->validate();
+        
+        $id = 1;
+       
+        try {
+            UserSkills::create([
+                'user_id' => $id,
+                'name' => $this->name,
+                'experience' => $this->experience,
+                'expertise' => $this->expertise,
+                'description' => $this->description
+            ]);
+
+            $this->reset([
+                'name',
+                'experience',
+                'expertise',
+                'description'
+            ]);
+
+            $this->dispatch('swal', [
+                'type' => 'success',
+                'title' => 'Success!',
+                'text' => 'Skill added!',
+            ]);
+
+        } catch (\Exception $e) {
+            $this->dispatch('swal', [
+                'type' => 'error',
+                'title' => 'Success!',
+                'text' => $e->getMessage(),
+            ]);
+        }
+        
+    }
+
+    public function items($data = null) {
+        if($data->count() > 0) {
             foreach($data as $index => $skills) {
-                $this->rows[$index] = [
+                $this->items[$index] = [
                     'id' => $skills->id,
                     'name' => $skills->name, 
                     'experience' => $skills->experience,
@@ -28,71 +88,15 @@ class Skills extends Component
                     'description' => $skills->description
                 ];
             }
-        } else {
-            $this->rows[] = [
-                'id' => '',
-                'name' => '', 
-                'experience' => '', 
-                'expertise' => '', 
-                'description' => ''
-            ];
         }
-    }
-
-    public function remove_row($index, $id = null) {
-
-        if($id != null) {
-            $record = SkillsInformation::where('id', $id);
-
-            if($record->exists()) {
-                $record->delete();
-            }
-        }
-
-        unset($this->rows[$index]);
-        $this->rows = array_values($this->rows);
-    }
-
-    public function create() {
-        $validated = $this->validate();
-        $id = 1;
-       
-        foreach ($validated['rows'] as &$row) {
-            SkillsInformation::updateOrCreate(['id' => $row['id']], [
-                'user_id' => $id,
-                'name' => $row['name'],
-                'experience'  => $row['experience'],
-                'expertise' => $row['expertise'],
-                'description' => $row['description']
-            ]);
-        }
-    }
-
-    public function rules() {
-        return [
-            'rows.*.id' => '',
-            'rows.*.name' => 'required',
-            'rows.*.experience' => 'required',
-            'rows.*.expertise' => 'required',
-            'rows.*.description' => '',
-        ];
-    }
-
-    public function messages() {
-        return [
-            'rows.*.name.required' => 'The name field is required.',
-            'rows.*.experience.required' => 'The experience field is required.',
-            'rows.*.expertise.required' => 'The expertise field is required.',
-        ];
     }
 
     public function render()
     {
         $id = 1;
-        $all_skills = SkillsInformation::where('user_id', $id)->get();
-        if($all_skills->count() > 0) {
-            $this->add_row($all_skills);
-        }
+        $data = UserSkills::where('user_id', $id)
+            ->orderByDesc('created_at')->get();
+        $this->items($data);
         return view('livewire.skills');
     }
 }

@@ -22,5 +22,4 @@ Route::get('/', function () {
 Route::prefix('/')->group(function() {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('portfolio/{type}', [PortfolioController::class, 'index'])->name('portfolio');
-
 });
