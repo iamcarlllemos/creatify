@@ -237,7 +237,7 @@
 }
 
 .attachments .row > * {
-    padding: 0px 8px 8px 8px !important;
+    padding: 5px 5px 5px 5px !important;
 }
 
 .item-content .card-body {
@@ -317,6 +317,8 @@
     position: relative;
     overflow: hidden;
     border-radius: 15px;
+    width: 100%;
+    height: 100%;
 }
 
 .attachments .more {

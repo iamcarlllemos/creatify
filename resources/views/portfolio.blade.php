@@ -28,6 +28,8 @@
                 @elseif ($type === 'projects')
                     @if (request()->query('action') === 'create')
                         @livewire('add-projects')
+                    @elseif(request()->query('action') === 'edit' && request()->query('id') != null)
+                        @livewire('edit-projects')
                     @else
                         @livewire('projects')
                     @endif

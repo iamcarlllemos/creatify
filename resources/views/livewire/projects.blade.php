@@ -22,16 +22,16 @@
                         <div class="select">
                             <input type="checkbox" wire:change="updateSelected({{$item->id}})">
                         </div>
-                        <div class="edit" wire:click.prevent="">
+                        <a href="/portfolio/projects?action=edit&id={{$item->id}}" class="edit" >
                             <i class='bx bx-edit-alt' ></i>
-                        </div>
+                        </a>
                         <div class="delete" wire:click.prevent="attemptDelete({{$item->id}})">
                             <i class='bx bx-trash'></i>
                         </div>
                     </div>
                     <div class="mt-3">
                         <div class="caption">
-                            <h5>{{$item->caption}}</h5>
+                            <h5>{{ucfirst($item->caption)}}</h5>
                             <p>{{wordDate($item->created_at)}}</p>
                         </div>
                         <div class="caption-description">
@@ -52,105 +52,70 @@
                     <div class="attachments">
                         @if ($item->attachments && $item->attachments->count() > 4)
                             <div id="lightgallery" class="row">
-                                <div class="col-12 col-md-6">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <a data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}">
-                                                <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" class="w-100" alt="" srcset="">
-                                            </a>
+                                <a class="col-12 col-md-6" href="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}">
+                                    <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" class="w-100" alt="" srcset="">
+                                </a>
+                                <a class="col-12 col-md-6" href="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}" data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}">
+                                    <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}" class="w-100" alt="" srcset="">
+                                </a>
+                                <a class="col-12 col-md-6" href="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}" data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}">
+                                    <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}" class="w-100" alt="" srcset="">
+                                </a>
+                                <a class="col-12 col-md-6" href="{{Storage::url('project_attachments/'.$items[$index]->attachments[3]->attachment)}}" data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[3]->attachment)}}">
+                                    <div class="more-container">
+                                        <div class="more">
+                                            <h4>+ {{$item->attachments->count() - 4}}</h4>
                                         </div>
-                                        <div class="col-12">
-                                            <a data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}">
-                                                <img src="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}" class="w-100" alt="" srcset="">
-                                            </a>
-                                        </div>
+                                        <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[3]->attachment)}}" class="w-100" alt="" srcset="">
                                     </div>
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <a data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}">
-                                                <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}" class="w-100" alt="" srcset="">
-                                            </a>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="more-container">
-                                                <div class="more">
-                                                    <h4>+ {{$item->attachments->count() - 4}}</h4>
-                                                </div>
-                                                <a data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[3]->attachment)}}">
-                                                    <img src="{{Storage::url('project_attachments/'.$items[$index]->attachments[3]->attachment)}}" class="w-100" alt="" srcset="">
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                </a>
+                                @foreach ($item->attachments->slice(4) as $item)
+                                    <a class="col-12 col-md-6 d-none" href="{{Storage::url('project_attachments/'.$item->attachment)}}" data-src="{{Storage::url('project_attachments/'.$item->attachment)}}">
+                                        <img  src="{{Storage::url('project_attachments/'.$item->attachment)}}" class="w-100" alt="" srcset="">
+                                    </a>
+                                @endforeach
                             </div>
                         @elseif ($item->attachments && $item->attachments->count() === 4)
-                            <div class="col-12 col-md-6">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div id="lightgallery">
-                                            <a href="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}">
-                                                <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" class="w-100" alt="" srcset="">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div id="lightgallery">
-                                            <a href="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}">
-                                                <img src="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}" class="w-100" alt="" srcset="">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div id="lightgallery">
-                                            <a href="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}">
-                                                <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}" class="w-100" alt="" srcset="">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div id="lightgallery">
-                                            <a href="{{Storage::url('project_attachments/'.$items[$index]->attachments[3]->attachment)}}">
-                                                <img src="{{Storage::url('project_attachments/'.$items[$index]->attachments[3]->attachment)}}" class="w-100" alt="" srcset="">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div id="lightgallery" class="row">
+                                <a class="col-12 col-md-6" href="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}">
+                                    <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" class="w-100" alt="" srcset="">
+                                </a>
+                                <a class="col-12 col-md-6" href="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}" data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}">
+                                    <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}" class="w-100" alt="" srcset="">
+                                </a>
+                                <a class="col-12 col-md-6" href="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}" data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}">
+                                    <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}" class="w-100" alt="" srcset="">
+                                </a>
+                                <a class="col-12 col-md-6" href="{{Storage::url('project_attachments/'.$items[$index]->attachments[3]->attachment)}}" data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[3]->attachment)}}">
+                                    <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[3]->attachment)}}" class="w-100" alt="" srcset="">
+                                </a>
                             </div>
                         @elseif ($item->attachments && $item->attachments->count() === 3)
-                            <div class="col-12 col-md-7 main">
-                                <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" class="w-100" alt="" srcset="">
-                            </div>
-                            <div class="col-12 col-md-5">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}" class="w-100" alt="" srcset="">
-                                    </div>
-                                    <div class="col-12">
-                                        <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}" class="w-100" alt="" srcset="">
-                                    </div>
-                                </div>
+                            <div id="lightgallery" class="row">
+                                <a class="col-12 col-md-6" href="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}">
+                                    <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" class="w-100" alt="" srcset="">
+                                </a>
+                                <a class="col-12 col-md-6" href="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}" data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}">
+                                    <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}" class="w-100" alt="" srcset="">
+                                </a>
+                                <a class="col-12 col-md-12" href="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}" data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}">
+                                    <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[2]->attachment)}}" class="w-100" alt="" srcset="">
+                                </a>
                             </div>
                         @elseif ($item->attachments && $item->attachments->count() == 2)
-                            <div class="col-12 col-md-6">
-                                <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" class="w-100" alt="" srcset="">
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}" class="w-100" alt="" srcset="">
+                            <div id="lightgallery" class="row">
+                                <a class="col-12 col-md-6" href="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}">
+                                    <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" class="w-100" alt="" srcset="">
+                                </a>
+                                <a class="col-12 col-md-6" href="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}" data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}">
+                                    <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[1]->attachment)}}" class="w-100" alt="" srcset="">
+                                </a>
                             </div>
                         @elseif ($item->attachments && $item->attachments->count() == 1)
-                            <div class="col-12 col-md-12 main">
-                                <div id="lightgallery">
-                                    <a href="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}">
-                                        <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" class="w-100" alt="" srcset="">
-                                    </a>
-                                </div>
+                            <div id="lightgallery" class="row">
+                                <a class="col-12 col-md-12 main" href="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" data-src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}">
+                                    <img  src="{{Storage::url('project_attachments/'.$items[$index]->attachments[0]->attachment)}}" class="w-100" alt="" srcset="">
+                                </a>
                             </div>
                         @endif
                     </div>
